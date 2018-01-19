@@ -1,14 +1,15 @@
-package Parkeersimulator;
+package Parkeersimulator.model;
+
+import Parkeersimulator.view.SimulatorView;
+import Parkeersimulator.model.*;
 
 import java.util.Random;
 
-public class Simulator {
+public class SimulatorModel {
 
 	private static final String AD_HOC = "1";
 	private static final String PASS = "2";
-	public static void main(String[] args) {
-	    new Simulator().run();
-    }
+
 	
 	private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
@@ -31,12 +32,13 @@ public class Simulator {
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
-    public Simulator() {
+    public SimulatorModel() {
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
         simulatorView = new SimulatorView(3, 6, 30);
+        run();
     }
 
     public void run() {

@@ -1,4 +1,7 @@
-package Parkeersimulator;
+package Parkeersimulator.view;
+
+import Parkeersimulator.model.Car;
+import Parkeersimulator.model.Location;
 
 import javax.swing.*;
 import java.awt.*;
@@ -146,6 +149,7 @@ public class SimulatorView extends JFrame {
          */
         public CarParkView() {
             size = new Dimension(0, 0);
+            setTitle("Parkeergarage van El Legendarios");
         }
     
         /**
