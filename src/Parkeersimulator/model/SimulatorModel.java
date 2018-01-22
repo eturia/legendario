@@ -3,6 +3,7 @@ package Parkeersimulator.model;
 import Parkeersimulator.view.SimulatorView;
 import Parkeersimulator.model.*;
 
+import java.awt.*;
 import java.util.Random;
 
 public class SimulatorModel {
@@ -10,7 +11,7 @@ public class SimulatorModel {
 	private static final String AD_HOC = "1";
 	private static final String PASS = "2";
 
-	
+
 	private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
@@ -102,15 +103,21 @@ public class SimulatorModel {
         addArrivingCars(numberOfCars, PASS);    	
     }
 
-    private void carsEntering(CarQueue queue){
-        int i=0;
-        // Remove car from the front of the queue and assign to a parking space.
-    	while (queue.carsInQueue()>0 && 
-    			simulatorView.getNumberOfOpenSpots()>0 && 
-    			i<enterSpeed) {
+    private void carsEntering(CarQueue queue) {
+        int i = 0;
+        while (queue.carsInQueue() > 0 &&
+                simulatorView.getNumberOfOpenSpots() > 0 &&
+                i < enterSpeed) {
             Car car = queue.removeCar();
-            Location freeLocation = simulatorView.getFirstFreeLocation();
-            simulatorView.setCarAt(freeLocation, car);
+            if (car.getColor() == Color.blue) {
+                Location freeLocation = simulatorView.getFirstPassLocation();
+                simulatorView.setCarAt(freeLocation, car);
+                simulatorView.getPass().increment();
+            } else {
+                Location freeLocation = simulatorView.getFirstPaidLocation();
+                simulatorView.setCarAt(freeLocation, car);
+                simulatorView.getAdhoc().increment();
+            }
             i++;
         }
     }

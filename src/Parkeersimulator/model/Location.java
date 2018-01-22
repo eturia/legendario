@@ -67,4 +67,9 @@ public class Location {
         return place;
     }
 
+    /**
+     * @return the floor for pass holders
+     */
+    public int getPassFloor() { return 0; }
+
 }
