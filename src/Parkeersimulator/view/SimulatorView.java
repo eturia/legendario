@@ -1,5 +1,6 @@
 package Parkeersimulator.view;
 
+import Parkeersimulator.controller.SimulatorController;
 import Parkeersimulator.model.Car;
 import Parkeersimulator.model.Location;
 
@@ -7,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SimulatorView extends JFrame {
+    private SimulatorController controller;
     private CarParkView carParkView;
     private int numberOfFloors;
     private int numberOfRows;
@@ -14,13 +16,15 @@ public class SimulatorView extends JFrame {
     private int numberOfOpenSpots;
     private Car[][][] cars;
 
+    static final Color FRAME_BG_COLOR = new Color(221, 221, 221);
+
     public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
         this.numberOfPlaces = numberOfPlaces;
         this.numberOfOpenSpots =numberOfFloors*numberOfRows*numberOfPlaces;
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
-        
+
         carParkView = new CarParkView();
 
         Container contentPane = getContentPane();
@@ -34,8 +38,8 @@ public class SimulatorView extends JFrame {
     public void updateView() {
         carParkView.updateView();
     }
-    
-	public int getNumberOfFloors() {
+
+    public int getNumberOfFloors() {
         return numberOfFloors;
     }
 
@@ -48,9 +52,9 @@ public class SimulatorView extends JFrame {
     }
 
     public int getNumberOfOpenSpots(){
-    	return numberOfOpenSpots;
+        return numberOfOpenSpots;
     }
-    
+
     public Car getCarAt(Location location) {
         if (!locationIsValid(location)) {
             return null;
@@ -138,27 +142,36 @@ public class SimulatorView extends JFrame {
         }
         return true;
     }
-    
+
     private class CarParkView extends JPanel {
-        
+
         private Dimension size;
-        private Image carParkImage;    
-    
+        private Image carParkImage;
+
+        private JPanel contentPane;
+        private JPanel bottomWrapper;
+
+
+
         /**
          * Constructor for objects of class CarPark
          */
         public CarParkView() {
             size = new Dimension(0, 0);
             setTitle("Parkeergarage van El Legendarios");
+
+            makeFrame();
         }
-    
+
+
+
         /**
          * Overridden. Tell the GUI manager how big we would like to be.
          */
         public Dimension getPreferredSize() {
             return new Dimension(800, 500);
         }
-    
+
         /**
          * Overriden. The car park view component needs to be redisplayed. Copy the
          * internal image to screen.
@@ -167,7 +180,7 @@ public class SimulatorView extends JFrame {
             if (carParkImage == null) {
                 return;
             }
-    
+
             Dimension currentSize = getSize();
             if (size.equals(currentSize)) {
                 g.drawImage(carParkImage, 0, 0, null);
@@ -177,7 +190,7 @@ public class SimulatorView extends JFrame {
                 g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
             }
         }
-    
+
         public void updateView() {
             // Create a new car park image if the size has changed.
             if (!size.equals(getSize())) {
@@ -197,7 +210,7 @@ public class SimulatorView extends JFrame {
             }
             repaint();
         }
-    
+
         /**
          * Paint a place on this car park view in a given color.
          */
@@ -209,6 +222,79 @@ public class SimulatorView extends JFrame {
                     20 - 1,
                     10 - 1); // TODO use dynamic size or constants
         }
+
+        private void makeFrame()
+        {
+            contentPane = (JPanel) getContentPane();
+            contentPane.setLayout(new BorderLayout());
+            contentPane.setBackground(FRAME_BG_COLOR);
+
+            bottomWrapper = new JPanel();
+            bottomWrapper.setLayout(new BorderLayout());
+            bottomWrapper.setBackground(FRAME_BG_COLOR);
+            contentPane.add(bottomWrapper, BorderLayout.SOUTH);
+            makeInputUI();
+
+            pack();
+            setLocationRelativeTo(null);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setMinimumSize(new Dimension(1105, 550));
+            setVisible(true);
+            System.out.println("size: " + this.getSize());
+        }
+
+        public void makeInputUI()
+        {
+            JPanel inputPanel = new JPanel();
+            inputPanel.setLayout(new GridBagLayout());
+            inputPanel.setBackground(FRAME_BG_COLOR);
+            GridBagConstraints c = new GridBagConstraints();
+
+            JLabel lenghtLabel = new JLabel("Minuten: ");
+            c.gridy = 0;
+            c.gridx = 0;
+            c.gridwidth = 2;
+            c.insets = new Insets(2, 2, 2, 2);
+            inputPanel.add(lenghtLabel, c);
+
+            JTextField durationField = new JTextField(3);
+            durationField.addActionListener(e -> controller.startSimulation(getSimulationLengthField(durationField)));
+            c.gridy = 0;
+            c.gridx = 2;
+            c.gridwidth = 2;
+            c.fill = GridBagConstraints.HORIZONTAL;
+            inputPanel.add(durationField, c);
+
+            JButton startSimulationButton = new JButton("Run");
+            startSimulationButton.addActionListener(e -> controller.startSimulation(getSimulationLengthField(durationField)));
+            c.gridy = 1;
+            c.gridx = 0;
+            c.gridwidth = 1;
+            inputPanel.add(startSimulationButton, c);
+
+            bottomWrapper.add(inputPanel, BorderLayout.EAST);
+
+        }
+
+        public int getSimulationLengthField(JTextField durationField)
+        {
+            try{
+                return Integer.parseInt(durationField.getText());
+            }
+            catch (NumberFormatException e) {
+                showError("Voer een geldig getal in");
+                return 0;
+            }
+        }
+
+        public void showError(String message)
+        {
+            JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
     }
 
+
 }
+
