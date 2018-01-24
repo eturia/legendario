@@ -3,35 +3,35 @@ package Parkeersimulator.controller;
 import java.util.HashMap;
 
 
-public class RegisterController {
+public class ReferanceController {
 
-    private static RegisterController Instance = null;
+    private static ReferanceController Instance = null;
     private HashMap<String, AbstractController> ControllerObjects;
 
-    private RegisterController(){
+    private ReferanceController(){
         this.Instance = this;
         this.ControllerObjects = new HashMap<>();
     }
 
-    public static RegisterController getInstance()
+    public static ReferanceController getInstance()
     {
-        if(Instance == null) {
-            new RegisterController();
-        }
+        if(Instance == null)
+            new ReferanceController();
+
         return Instance;
     }
 
     public void addObjectReference(AbstractController o)
     {
         String[] name = o.getClass().getName().split("\\.");
-        ControllerObjects.put(name[1],o);
+        ControllerObjects.put(name[2],o);
     }
 
     public Object getObjectInstance(String ObjectName)
     {
-        if(ControllerObjects.get(ObjectName) != null) {
+        if(ControllerObjects.get(ObjectName) != null)
             return ControllerObjects.get(ObjectName);
-        }
+
         return null;
     }
 

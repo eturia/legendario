@@ -7,32 +7,35 @@ public class CarController extends AbstractController {
     private int numberOfRows;
     private int numberOfPlaces;
     private int numberOfOpenSpots;
-    private Car[][][] cars;
-    private Counter adhoc;
-    private Counter pass;
     private int passSpots;
     private int passHolder;
+    private Car[][][] cars;
+    private Calculate adhoc;
+    private Calculate pass;
 
-    public CarController(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+    public CarController(int numberOfFloors, int numberOfRows, int numberOfPlaces){
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
         this.numberOfPlaces = numberOfPlaces;
         this.numberOfOpenSpots =numberOfFloors*numberOfRows*numberOfPlaces;
+
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
-
-        adhoc = new Counter("adhoc");
-        pass = new Counter("pass");
-
+        adhoc = new Calculate("adhoc");
+        pass = new Calculate("pass");
         passSpots = 180;
         passHolder = 0;
     }
 
-    public Counter getAdhoc(){
+    public Calculate getAdhoc(){
         return adhoc;
     }
 
-    public Counter getPass(){
+    public Calculate getPass(){
         return pass;
+    }
+
+    protected int getPassHolder(){
+        return passHolder;
     }
 
     public int getNumberOfFloors() {
@@ -60,13 +63,14 @@ public class CarController extends AbstractController {
         return cars[location.getFloor()][location.getRow()][location.getPlace()];
     }
 
-    public boolean setCarAt(Location location, Car car) {
+    protected boolean setCarAt(Location location, Car car) {
         if (!locationIsValid(location)) {
             return false;
         }
         Car oldCar = getCarAt(location);
         if (oldCar == null) {
             cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
+
             car.setLocation(location);
             numberOfOpenSpots--;
             return true;
@@ -74,7 +78,7 @@ public class CarController extends AbstractController {
         return false;
     }
 
-    public Car removeCarAt(Location location) {
+    protected Car removeCarAt(Location location) {
         if (!locationIsValid(location)) {
             return null;
         }
@@ -89,12 +93,14 @@ public class CarController extends AbstractController {
             pass.decrement();
             passHolder--;
             return car;
-        } else {
+        } else{
             cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
             car.setLocation(null);
             numberOfOpenSpots++;
+            adhoc.decrement();
             return car;
         }
+
     }
 
     protected Location getFirstPassLocation() {
@@ -134,7 +140,7 @@ public class CarController extends AbstractController {
         return null;
     }
 
-    public Car getFirstLeavingCar() {
+    protected Car getFirstLeavingCar() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
@@ -172,4 +178,5 @@ public class CarController extends AbstractController {
         }
         return true;
     }
+
 }

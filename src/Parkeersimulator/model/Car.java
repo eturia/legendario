@@ -1,6 +1,7 @@
 package Parkeersimulator.model;
 
 import java.awt.*;
+import java.util.Random;
 
 public abstract class Car {
 
@@ -31,7 +32,7 @@ public abstract class Car {
     public void setMinutesLeft(int minutesLeft) {
         this.minutesLeft = minutesLeft;
     }
-    
+
     public boolean getIsPaying() {
         return isPaying;
     }
@@ -51,6 +52,11 @@ public abstract class Car {
     public void tick() {
         minutesLeft--;
     }
-    
+
     public abstract Color getColor();
+
+    public int generateParkingTime(){
+        Random random = new Random();
+        return  Math.round(15 + random.nextFloat() * 3 * 60);
+    }
 }

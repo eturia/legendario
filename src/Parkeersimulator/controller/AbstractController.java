@@ -1,13 +1,13 @@
 package Parkeersimulator.controller;
 
 
+
 public abstract class AbstractController
 {
-
-    protected RegisterController registerController;
+    protected ReferanceController registerController;
 
     public AbstractController()
     {
-        this.registerController = RegisterController.getInstance();
+        this.registerController = ReferanceController.getInstance();
     }
 }

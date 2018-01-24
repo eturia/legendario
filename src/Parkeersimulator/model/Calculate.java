@@ -1,12 +1,10 @@
 package Parkeersimulator.model;
 
-
-public class Counter {
-
+public class Calculate {
     private String name;
     private int count;
 
-    public Counter(String name)
+    public Calculate(String name)
     {
         this.name = name;
         count = 0;
@@ -22,6 +20,10 @@ public class Counter {
         return count;
     }
 
+    public void reset()
+    {
+        count = 0;
+    }
 
     public void increment()
     {
@@ -30,10 +32,5 @@ public class Counter {
 
     public void decrement(){
         count--;
-    }
-
-    public void reset()
-    {
-        count = 0;
     }
 }
