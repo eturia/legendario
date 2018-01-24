@@ -1,197 +1,34 @@
 package Parkeersimulator.view;
 
+import Parkeersimulator.controller.*;
 import Parkeersimulator.model.*;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class SimulatorView extends JFrame {
-    private CarParkView carParkView;
-    private int numberOfFloors;
-    private int numberOfRows;
-    private int numberOfPlaces;
-    private int numberOfOpenSpots;
-    private Car[][][] cars;
-    private Counter adhoc;
-    private Counter pass;
-    private int passSpots;
-    private int passHolder;
+public class SimulatorView extends AbstractView{
+    private CarController carController;
+    private CarParkView carParkGarageView;
 
-    public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
-        this.numberOfFloors = numberOfFloors;
-        this.numberOfRows = numberOfRows;
-        this.numberOfPlaces = numberOfPlaces;
-        this.numberOfOpenSpots =numberOfFloors*numberOfRows*numberOfPlaces;
-        cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+    public SimulatorView() {
+        carController = (CarController) super.registerController.getObjectInstance("CarController");
 
-        adhoc = new Counter("adhoc");
-        pass = new Counter("pass");
-
-        passSpots = 180;
-        passHolder = 0;
-
-        carParkView = new CarParkView();
-
-        Container contentPane = getContentPane();
-        contentPane.add(carParkView, BorderLayout.CENTER);
-        pack();
+        carParkGarageView = new CarParkView();
+        add(carParkGarageView, BorderLayout.CENTER);
         setVisible(true);
-
-        updateView();
-    }
-
-    public Counter getAdhoc(){
-        return adhoc;
-    }
-
-    public Counter getPass(){
-        return pass;
     }
 
     public void updateView() {
-        carParkView.updateView();
-    }
-    
-	public int getNumberOfFloors() {
-        return numberOfFloors;
+        carParkGarageView.updateView();
+        showStatus();
     }
 
-    public int getNumberOfRows() {
-        return numberOfRows;
-    }
-
-    public int getNumberOfPlaces() {
-        return numberOfPlaces;
-    }
-
-    public int getNumberOfOpenSpots(){
-    	return numberOfOpenSpots;
-    }
-
-    public int getPassSpots() {return passSpots; }
-
-    public Car getCarAt(Location location) {
-        if (!locationIsValid(location)) {
-            return null;
-        }
-        return cars[location.getFloor()][location.getRow()][location.getPlace()];
-    }
-
-    public boolean setCarAt(Location location, Car car) {
-        if (!locationIsValid(location)) {
-            return false;
-        }
-        Car oldCar = getCarAt(location);
-        if (oldCar == null) {
-            cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
-            car.setLocation(location);
-            numberOfOpenSpots--;
-            return true;
-        }
-        return false;
-    }
-
-    public Car removeCarAt(Location location) {
-        if (!locationIsValid(location)) {
-            return null;
-        }
-        Car car = getCarAt(location);
-        if (car == null) {
-            return null;
-        }
-        if (car instanceof ParkingPassCar) {
-            cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
-            car.setLocation(null);
-            numberOfOpenSpots++;
-            pass.decrement();
-            passHolder--;
-            return car;
-        } else {
-            cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
-            car.setLocation(null);
-            numberOfOpenSpots++;
-            return car;
+    public void showStatus() {
+        if(!isVisible()) {
+            setVisible(true);
         }
     }
 
-    //in controller naar protected
-    public Location getFirstPassLocation() {
-        if (passHolder < getPassSpots()) {
-            for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-                for (int row = 0; row < getNumberOfRows(); row++) {
-                    for (int place = 0; place < getNumberOfPlaces(); place++) {
-                        Location location = new Location(floor, row, place);
-                        if (getCarAt(location) == null) {
-                            passHolder++;
-                            return location;
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    //in controller naar protected
-    public Location getFirstPaidLocation() {
-        int paid = 0;
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    paid++;
-                    Location location = new Location(floor, row, place);
-                    if (getCarAt(location) == null) {
-                        if (paid <= getPassSpots()) {
-                            //Do Nothing
-                        } else {
-                            return location;
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    public Car getFirstLeavingCar() {
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
-                    if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
-                        return car;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    public void tick() {
-        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
-                    if (car != null) {
-                        car.tick();
-                    }
-                }
-            }
-        }
-    }
-
-    private boolean locationIsValid(Location location) {
-        int floor = location.getFloor();
-        int row = location.getRow();
-        int place = location.getPlace();
-        if (floor < 0 || floor >= numberOfFloors || row < 0 || row > numberOfRows || place < 0 || place > numberOfPlaces) {
-            return false;
-        }
-        return true;
-    }
-    
     private class CarParkView extends JPanel {
         
         private Dimension size;
@@ -202,7 +39,6 @@ public class SimulatorView extends JFrame {
          */
         public CarParkView() {
             size = new Dimension(0, 0);
-            setTitle("Parkeergarage van El Legendarios");
         }
     
         /**
@@ -240,13 +76,13 @@ public class SimulatorView extends JFrame {
             }
             Graphics graphics = carParkImage.getGraphics();
             int passCounter = 0;
-            for(int floor = 0; floor < getNumberOfFloors(); floor++) {
-                for(int row = 0; row < getNumberOfRows(); row++) {
-                    for(int place = 0; place < getNumberOfPlaces(); place++) {
+            for(int floor = 0; floor < carController.getNumberOfFloors(); floor++) {
+                for(int row = 0; row < carController.getNumberOfRows(); row++) {
+                    for(int place = 0; place < carController.getNumberOfPlaces(); place++) {
                         Location location = new Location(floor, row, place);
-                        Car car = getCarAt(location);
+                        Car car = carController.getCarAt(location);
                         passCounter++;
-                        if (passCounter <= getPassSpots()) {
+                        if (passCounter <= carController.getPassSpots()) {
                             Color color = car == null ? Color.lightGray : car.getColor();
                             drawPlace(graphics, location, color);
                         } else {
@@ -271,6 +107,9 @@ public class SimulatorView extends JFrame {
                     20 - 1,
                     10 - 1); // TODO use dynamic size or constants
         }
+    }
+    public void setVisibility(boolean visibility) {
+        setVisible(visibility);
     }
 
 }

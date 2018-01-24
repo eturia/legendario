@@ -2,9 +2,8 @@ package Parkeersimulator.model;
 
 
 public class Counter {
-    // A name for this type of simulation participant
+
     private String name;
-    // How many of this type exist in the simulation.
     private int count;
 
     public Counter(String name)
