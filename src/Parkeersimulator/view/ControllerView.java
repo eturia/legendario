@@ -7,14 +7,14 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.awt.*;
 
-public class ButtonView  extends AbstractView{
+public class ControllerView extends AbstractView{
 
     SimulatorController simulatorController;
     private Timer simulateTimer;
     private JButton start, stop;
 
 
-    public ButtonView(){
+    public ControllerView(){
         this.simulatorController = (SimulatorController) super.registerController.getObjectInstance("SimulatorController");
 
         startButton();
