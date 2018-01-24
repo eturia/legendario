@@ -11,7 +11,7 @@ public class SimulatorRunner extends JFrame {
     private SimulatorController simulatorController;
     private SimulatorView simulatorView;
     private PieView pieView;
-    private ButtonView button;
+    private ControllerView button;
 
     public SimulatorRunner() {
 
@@ -23,7 +23,7 @@ public class SimulatorRunner extends JFrame {
         simulatorController = new SimulatorController();
         reg.addObjectReference(simulatorController);
         simulatorView = new SimulatorView();
-        button = new ButtonView();
+        button = new ControllerView();
         pieView = new PieView();
 
         setTitle("Parkeergarage El Legendarios");
