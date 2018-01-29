@@ -1,7 +1,9 @@
 package Parkeersimulator.controller;
 
 import Parkeersimulator.model.ParkingModel;
+import Parkeersimulator.view.ParkGarageView;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class SimulatorController extends Controller<ParkingModel> {
@@ -19,6 +21,7 @@ public class SimulatorController extends Controller<ParkingModel> {
             case "knop_stop":
                 model.setRunning(false);
                 return true;
+
         }
 
         return false;

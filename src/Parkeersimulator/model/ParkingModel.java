@@ -1,5 +1,8 @@
 package Parkeersimulator.model;
 
+import Parkeersimulator.view.ParkGarageView;
+
+import javax.swing.*;
 import java.util.Random;
 
 public class ParkingModel extends Model implements Runnable{
@@ -12,6 +15,7 @@ public class ParkingModel extends Model implements Runnable{
 
     private static final int AD_HOC = 1;
     private static final int PASS = 2;
+
 
     private int tickPause = 100;
 
@@ -206,5 +210,7 @@ public class ParkingModel extends Model implements Runnable{
     {
         running = flag;
     }
+
+
 
 }

@@ -4,6 +4,7 @@ import Parkeersimulator.controller.Controller;
 import Parkeersimulator.model.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class ParkGarageView extends View {
@@ -55,11 +56,11 @@ public class ParkGarageView extends View {
         add(lengthLabel,c);
 
         //Lengte Veld
-        durationField = new JTextField();
+        durationField = new JTextField(3);
+        durationField.setName("durationField");
+        durationField.addActionListener(controller);
+
         add(durationField, c);
-
-
-
 
 
     }
