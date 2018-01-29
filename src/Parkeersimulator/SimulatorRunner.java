@@ -1,5 +1,6 @@
 package Parkeersimulator;
 
+import Parkeersimulator.controller.SimulatorController;
 import Parkeersimulator.model.Model;
 import Parkeersimulator.controller.Controller;
 import Parkeersimulator.model.ParkingModel;
@@ -15,7 +16,7 @@ public class SimulatorRunner extends JFrame {
         setTitle("Parkeergarage El Legendarios");
 
         ParkingModel model=new ParkingModel();
-        Controller controller=null;
+        Controller controller= new SimulatorController(model);
         View view=new ParkGarageView(controller);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -25,7 +26,7 @@ public class SimulatorRunner extends JFrame {
 
         model.registerView(view);
         model.updateViews();
-        model.run();
+
 
     }
     public static void main(String[] args) {

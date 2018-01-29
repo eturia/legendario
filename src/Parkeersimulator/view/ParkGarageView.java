@@ -11,13 +11,39 @@ public class ParkGarageView extends View {
         private Dimension size;
         private Image carParkImage;
 
+        private JButton knop_start, knop_stop, knop_reset;
+        private JLabel lengthLabel;
+        private JTextField durationField;
+
+        static final Color FRAME_BG_COLOR = new Color(221, 221, 221);
+
         /**
          * Constructor for objects of class CarPark
          */
     public ParkGarageView(Controller controller) {
         super(controller);
         size = new Dimension(0, 0);
+
+        //test
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new GridBagLayout());
+        inputPanel.setBackground(FRAME_BG_COLOR);
+        GridBagConstraints c = new GridBagConstraints();
+
+        // Bediening
+        knop_start = new JButton("Start");
+        knop_start.setName("knop_start");
+        knop_start.addActionListener(controller);
+
+        c.gridx = 1;
+        c.gridy = 0;
+        c.gridwidth=1;
+        c.gridheight=1;
+        add(knop_start, c);
     }
+
+
+
 
     /**
      * Overridden. Tell the GUI manager how big we would like to be.
