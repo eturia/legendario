@@ -1,46 +1,36 @@
 package Parkeersimulator;
 
-import Parkeersimulator.controller.*;
-import Parkeersimulator.view.*;
+import Parkeersimulator.model.Model;
+import Parkeersimulator.controller.Controller;
+import Parkeersimulator.model.ParkingModel;
+import Parkeersimulator.view.ParkGarageView;
+import Parkeersimulator.view.View;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class SimulatorRunner extends JFrame {
 
-    private SimulatorController simulatorController;
-    private SimulatorView simulatorView;
-    private PieView pieView;
-    private ControllerView button;
-
-    public SimulatorRunner() {
-
-        ReferanceController reg = ReferanceController.getInstance();
-        reg.addObjectReference(new CarController(3, 6, 30));
-        reg.addObjectReference(new TimeController());
-        reg.addObjectReference(new QueueController());
-
-        simulatorController = new SimulatorController();
-        reg.addObjectReference(simulatorController);
-        simulatorView = new SimulatorView();
-        button = new ControllerView();
-        pieView = new PieView();
-
+    public SimulatorRunner(){
         setTitle("Parkeergarage El Legendarios");
-        setLayout(new BorderLayout());
 
-        getContentPane().add(simulatorView, BorderLayout.CENTER);
-        getContentPane().add(pieView, BorderLayout.EAST);
-        getContentPane().add(button, BorderLayout.SOUTH);
+        ParkingModel model=new ParkingModel();
+        Controller controller=null;
+        View view=new ParkGarageView(controller);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        add(view);
         pack();
         setVisible(true);
-        setResizable(false);
-        AbstractView.notifyViews();
-    }
 
+        model.registerView(view);
+        model.updateViews();
+        model.run();
+
+    }
     public static void main(String[] args) {
         new SimulatorRunner();
     }
 }
+
+
