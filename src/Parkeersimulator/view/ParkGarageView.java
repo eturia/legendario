@@ -35,11 +35,33 @@ public class ParkGarageView extends View {
         knop_start.setName("knop_start");
         knop_start.addActionListener(controller);
 
+        knop_stop = new JButton("Stop");
+        knop_stop.setName("knop_stop");
+        knop_stop.addActionListener(controller);
+
+        //Start knop
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth=1;
         c.gridheight=1;
         add(knop_start, c);
+
+        //Stop knop
+        c.gridy++;
+        add(knop_stop, c);
+
+        //Lengte Label
+        lengthLabel = new JLabel("Aantal minuten");
+        add(lengthLabel,c);
+
+        //Lengte Veld
+        durationField = new JTextField();
+        add(durationField, c);
+
+
+
+
+
     }
 
 

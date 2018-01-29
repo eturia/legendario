@@ -2,7 +2,7 @@ package Parkeersimulator.model;
 
 import java.util.Random;
 
-public class ParkingModel extends Model{
+public class ParkingModel extends Model implements Runnable{
 
     public final Garage garage;
     private CarQueue entranceCarQueue;
@@ -29,6 +29,11 @@ public class ParkingModel extends Model{
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
+    //Multithreading info
+    private Thread thread;
+    private String threadName = "model";
+    private boolean running = true;
+
 
     public ParkingModel(){
         entranceCarQueue = new CarQueue();
@@ -43,8 +48,24 @@ public class ParkingModel extends Model{
     }
 
     public void run() {
-        for (int i = 0; i < 10000; i++) {
+        int i = 0;
+
+        while (i < 10000 && running) {
             tick();
+            i++;
+        }
+    }
+
+    public void start () {
+        if (thread == null) {
+            thread = new Thread (this, threadName);
+            running = true;
+            thread.start ();
+        }
+        else
+        {
+            thread = null;	// Delete the thread.
+            start();	// Remake a new thread and start the simulation.
         }
     }
 
@@ -180,4 +201,10 @@ public class ParkingModel extends Model{
         getGarage().removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
     }
+
+    public void setRunning( boolean flag)
+    {
+        running = flag;
+    }
+
 }

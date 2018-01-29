@@ -14,9 +14,11 @@ public class SimulatorController extends Controller<ParkingModel> {
     protected boolean eventHandler(String naam, ActionEvent e) {
         switch(naam) {
             case "knop_start":
-                model.run();
+                model.start();
                 return true;
-
+            case "knop_stop":
+                model.setRunning(false);
+                return true;
         }
 
         return false;
