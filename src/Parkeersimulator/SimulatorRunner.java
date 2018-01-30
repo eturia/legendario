@@ -27,7 +27,6 @@ public class SimulatorRunner extends JFrame {
         model.registerView(view);
         model.updateViews();
 
-
     }
     public static void main(String[] args) {
         new SimulatorRunner();
