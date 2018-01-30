@@ -67,4 +67,10 @@ public class Location {
         return place;
     }
 
+    /**
+     * @return 0
+     */
+    public int getPassFloor() { return 0; }
+
+
 }

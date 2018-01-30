@@ -3,6 +3,7 @@ package Parkeersimulator.model;
 import Parkeersimulator.view.ParkGarageView;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Random;
 
 public class ParkingModel extends Model implements Runnable{
@@ -123,15 +124,21 @@ public class ParkingModel extends Model implements Runnable{
         addArrivingCars(numberOfCars, 2);
     }
 
-    private void carsEntering(CarQueue queue){
-        int i=0;
-        // Remove car from the front of the queue and assign to a parking space.
-        while (queue.carsInQueue()>0 &&
-                getGarage().getNumberOfOpenSpots()>0 &&
-                i<enterSpeed) {
+    private void carsEntering(CarQueue queue) {
+        int i = 0;
+        while (queue.carsInQueue() > 0 &&
+                garage.getNumberOfOpenSpots() > 0 &&
+                i < enterSpeed) {
             Car car = queue.removeCar();
-            Location freeLocation = getGarage().getFirstFreeLocation();
-            getGarage().setCarAt(freeLocation, car);
+            if (car.getColor() == Color.blue) {
+                Location freeLocation = garage.getFirstPassLocation();
+                garage.setCarAt(freeLocation, car);
+                garage.getPass().increment();
+            } else {
+                Location freeLocation = garage.getFirstPaidLocation();
+                garage.setCarAt(freeLocation, car);
+                garage.getAdhoc().increment();
+            }
             i++;
         }
     }
@@ -147,7 +154,7 @@ public class ParkingModel extends Model implements Runnable{
             else {
                 carLeavesSpot(car);
             }
-            car = getGarage().getFirstLeavingCar();
+            car = garage.getFirstLeavingCar();
         }
     }
 
@@ -185,9 +192,9 @@ public class ParkingModel extends Model implements Runnable{
         return (int)Math.round(numberOfCarsPerHour / 60);
     }
 
-    private void addArrivingCars(int numberOfCars, int type){
+    private void addArrivingCars(int numberOfCars, int type) {
         // Add the cars to the back of the queue.
-        switch(type) {
+        switch (type) {
             case AD_HOC:
                 for (int i = 0; i < numberOfCars; i++) {
                     entranceCarQueue.addCar(new AdHocCar());
@@ -195,14 +202,16 @@ public class ParkingModel extends Model implements Runnable{
                 break;
             case PASS:
                 for (int i = 0; i < numberOfCars; i++) {
-                    entrancePassQueue.addCar(new ParkingPassCar());
+                    if (garage.getPassHolder() < garage.getPassSpots()) {
+                        entrancePassQueue.addCar(new ParkingPassCar());
+                    }
                 }
                 break;
         }
     }
 
     private void carLeavesSpot(Car car){
-        getGarage().removeCarAt(car.getLocation());
+        garage.removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
     }
 

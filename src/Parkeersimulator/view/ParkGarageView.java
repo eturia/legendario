@@ -111,16 +111,23 @@ public class ParkGarageView extends View {
         // Create a new car park image if the size has changed.
         if (!size.equals(getSize())) {
             size = getSize();
-            carParkImage = createImage(1000, 1000);
+            carParkImage = createImage(size.width, size.height);
         }
         Graphics graphics = carParkImage.getGraphics();
+        int passCounter = 0;
         for(int floor = 0; floor < parkingModel.getGarage().getNumberOfFloors(); floor++) {
             for(int row = 0; row < parkingModel.getGarage().getNumberOfRows(); row++) {
                 for(int place = 0; place < parkingModel.getGarage().getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
                     Car car = parkingModel.getGarage().getCarAt(location);
-                    Color color = car == null ? Color.white : car.getColor();
-                    drawPlace(graphics, location, color);
+                    passCounter++;
+                    if (passCounter <= parkingModel.getGarage().getPassSpots()) {
+                        Color color = car == null ? Color.lightGray : car.getColor();
+                        drawPlace(graphics, location, color);
+                    } else {
+                        Color color = car == null ? Color.white : car.getColor();
+                        drawPlace(graphics, location, color);
+                    }
                 }
             }
         }
