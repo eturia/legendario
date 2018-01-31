@@ -1,22 +1,25 @@
 package Parkeersimulator.view;
 
 import Parkeersimulator.controller.Controller;
+import Parkeersimulator.controller.SimulatorController;
 import Parkeersimulator.model.*;
+import Parkeersimulator.model.ParkingModel;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 public class ParkGarageView extends View {
+
+        private SimulatorController simulatorController;
 
         private Dimension size;
         private Image carParkImage;
 
         private JButton knop_start, knop_stop, knop_reset;
-        private JLabel lengthLabel;
+        private JLabel lengthLabel,timeTitle, timeLabel;
         private JTextField durationField;
 
-        static final Color FRAME_BG_COLOR = new Color(221, 221, 221);
+        static final Color FRAME_BG_COLOR = new Color(220, 220, 220);
 
         /**
          * Constructor for objects of class CarPark
@@ -28,7 +31,6 @@ public class ParkGarageView extends View {
         //test
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridBagLayout());
-        inputPanel.setBackground(FRAME_BG_COLOR);
         GridBagConstraints c = new GridBagConstraints();
 
         // Bediening
@@ -58,21 +60,25 @@ public class ParkGarageView extends View {
         //Lengte Veld
         durationField = new JTextField(3);
         durationField.setName("durationField");
-        durationField.addActionListener(controller);
-
         add(durationField, c);
-
 
     }
 
-
+        public int getSimulationLength(JTextField durationField){
+        try{
+            return Integer.parseInt(durationField.getText());
+        }
+        catch(NumberFormatException e){
+            return 0;
+        }
+    }
 
 
     /**
      * Overridden. Tell the GUI manager how big we would like to be.
      */
     public Dimension getPreferredSize() {
-        return new Dimension(800, 500);
+        return  new Dimension(800, 500);
     }
 
     /**
@@ -107,6 +113,7 @@ public class ParkGarageView extends View {
     }
 
     public void update(Model model) {
+
         ParkingModel parkingModel = (ParkingModel)model;
         // Create a new car park image if the size has changed.
         if (!size.equals(getSize())) {
@@ -126,5 +133,6 @@ public class ParkGarageView extends View {
         }
         repaint();
     }
+
 
 }

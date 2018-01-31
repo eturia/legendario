@@ -3,11 +3,14 @@ package Parkeersimulator.model;
 import Parkeersimulator.view.ParkGarageView;
 
 import javax.swing.*;
+import java.util.HashMap;
 import java.util.Random;
 
 public class ParkingModel extends Model implements Runnable{
 
     public final Garage garage;
+
+
     private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
@@ -16,7 +19,7 @@ public class ParkingModel extends Model implements Runnable{
     private static final int AD_HOC = 1;
     private static final int PASS = 2;
 
-
+    private int simulationLength = 0;
     private int tickPause = 100;
 
     private int day = 0;
@@ -38,6 +41,8 @@ public class ParkingModel extends Model implements Runnable{
     private String threadName = "model";
     private boolean running = true;
 
+    private HashMap<String, Integer> totalCarInfo;
+
 
     public ParkingModel(){
         entranceCarQueue = new CarQueue();
@@ -46,6 +51,7 @@ public class ParkingModel extends Model implements Runnable{
         exitCarQueue = new CarQueue();
         garage = new Garage(3,6,30);
     }
+
 
     public Garage getGarage() {
         return garage;
@@ -68,8 +74,8 @@ public class ParkingModel extends Model implements Runnable{
         }
         else
         {
-            thread = null;	// Delete the thread.
-            start();	// Remake a new thread and start the simulation.
+            thread = null;
+            start();
         }
     }
 
@@ -210,6 +216,12 @@ public class ParkingModel extends Model implements Runnable{
     {
         running = flag;
     }
+
+    public void setSimulationLength(int length)
+    {
+        this.simulationLength = length;
+    }
+
 
 
 

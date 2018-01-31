@@ -1,12 +1,19 @@
 package Parkeersimulator.model;
 
-public class Garage {
+import java.util.HashMap;
+
+public class Garage extends Model{
 
     private int numberOfFloors;
     private int numberOfRows;
     private int numberOfPlaces;
     private int numberOfOpenSpots;
     private Car[][][] cars;
+
+    private int passSpots;
+    private int passHolder;
+
+
 
     public Garage(int numberOfFloors, int numberOfRows, int numberOfPlaces){
         this.numberOfFloors = numberOfFloors;
@@ -114,11 +121,15 @@ public class Garage {
                     Car car = getCarAt(location);
                     if (car != null) {
                         car.tick();
+
+
                     }
                 }
             }
         }
     }
+
+
 
 }
 

@@ -13,6 +13,10 @@ abstract public class View extends JPanel {
         this.controller=controller;
     }
 
+    public View() {
+        this(null);
+    }
+
     abstract public void update(Model model);
 
 }
