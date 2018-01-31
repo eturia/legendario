@@ -8,6 +8,9 @@ import java.awt.image.BufferedImage;
 
 import Parkeersimulator.model.*;
 
+/**
+ * Creates a pie chart and legend to give a better overview of the car park
+ */
 
 public class PieChartView extends View {
 
@@ -46,6 +49,11 @@ public class PieChartView extends View {
             g.drawImage(pieChartImage, 0, 0, currentSize.width, currentSize.height, null);
         }
     }
+
+    /**
+     * Updates the view
+     * @param model
+     */
 
     @Override
     public void update(Model model) {
@@ -111,7 +119,7 @@ public class PieChartView extends View {
             g.fillArc(10,10,200,200,oldDegrees,(int)graden);
             oldDegrees += graden; // huidige positie meten
 
-
+            //Draw legend
             g.fillRect(width - 160, height - (cars.length*20) + (i*20), 10, 10);
             g.setColor(Color.BLACK);
             g.drawString(legendaNames[i] + "", width - 140, height - cars.length*20 + i*20 + (5 + (g.getFont().getSize() / 2)));

@@ -27,7 +27,7 @@ public class ParkingModel extends Model implements Runnable{
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
-    //Multithreading info
+    //Multithreading
     private Thread thread;
     private String threadName = "model";
     private boolean running = true;
@@ -80,14 +80,14 @@ public class ParkingModel extends Model implements Runnable{
 
     public void start () {
         if (thread == null) {
-            thread = new Thread (this, threadName);
-            running = true;
-            thread.start ();
+            thread = new Thread (this, threadName);        //Creates a new thread
+            running = true;                                       //Sets running to true
+            thread.start ();                                      //Start the thread
         }
         else
         {
-            thread = null;	// Delete the thread.
-            start();	// Remake a new thread and start the simulation.
+            thread = null;	                                      // Delete the thread.
+            start();	                                          // Remake a new thread and start the simulation.
         }
     }
 

@@ -9,6 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * This is the main view. It draws the car park and updates it
+ */
 
 public class ParkGarageView extends View {
 
@@ -16,11 +19,7 @@ public class ParkGarageView extends View {
     private BufferedImage carParkImage;
 
     private JButton knop_start, knop_stop, knop_reset;
-    private JLabel lengthLabel,timeTitle, timeLabel;
-    private JTextField durationField;
 
-    private String[] legendaName;
-    private Color[] legendaColor;
 
     /**
      * Constructor for objects of class CarPark
@@ -98,6 +97,10 @@ public class ParkGarageView extends View {
 
         }
 
+    /**
+     * Updates the view
+     * @param model
+     */
 
     public void update(Model model) {
 

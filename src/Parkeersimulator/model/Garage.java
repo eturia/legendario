@@ -1,5 +1,6 @@
 package Parkeersimulator.model;
 
+
 public class Garage {
 
     private int numberOfFloors;

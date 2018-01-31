@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Main class in the application
+ * Main class in the application.
  */
 
 public class SimulatorRunner extends JFrame {
@@ -19,8 +19,11 @@ public class SimulatorRunner extends JFrame {
         setTitle("Parkeergarage El Legendarios");
         setLayout(new BorderLayout());
 
+        //Creates a new model and controller
         ParkingModel model=new ParkingModel();
         Controller controller= new SimulatorController(model);
+
+        //Creating new views and adding them
         View view=new ParkGarageView(controller);
         View view2=new StatisticView();
         View view3=new TimeView();
@@ -35,6 +38,7 @@ public class SimulatorRunner extends JFrame {
         pack();
         setVisible(true);
 
+        //Registering views to the model and update them
         model.registerView(view);
         model.registerView(view2);
         model.registerView(view3);

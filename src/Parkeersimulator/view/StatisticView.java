@@ -4,48 +4,53 @@ import Parkeersimulator.model.Model;
 import Parkeersimulator.model.ParkingModel;
 
 import javax.swing.*;
-
 import java.awt.*;
 
+/**
+ * This class creates view objects for certain statistics and updates them
+ */
 
 public class StatisticView extends View {
 
     private JLabel freeSpotsLabel, totalCarsLabel, adHocLabel, parkingPassLabel, carQueueLabel;
     private JTextField freeSpots, totalCars, adHoc, parkingPass, carQueue;
 
+    /**
+     * Create labels and text fields
+     */
 
     public StatisticView (){
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BorderLayout());
 
 
-        // Vrije plekken label
+        // Free spots label
         freeSpotsLabel = new JLabel("Vrije plekken");
         add(freeSpotsLabel);
 
-        // Vrije plekken text field
+        // Free spots textfield
         freeSpots = new JTextField(3);
         freeSpots.setText("0");
         freeSpots.setEditable(false);
         freeSpots.setBackground(Color.WHITE);
         add(freeSpots);
 
-        //Totaal label
+        //Total label
         totalCarsLabel = new JLabel("Totaal auto's");
         add(totalCarsLabel);
 
-        //Totaal textfield
+        //Total textfield
         totalCars = new JTextField(3);
         totalCars.setText("0");
         totalCars.setEditable(false);
         totalCars.setBackground(Color.WHITE);
         add(totalCars);
 
-        //Adhoc label
+        //AdHoc label
         adHocLabel = new JLabel("AdHoc auto's");
         add(adHocLabel);
 
-        //Adhoc textfield
+        //AdHoc textfield
         adHoc = new JTextField(3);
         adHoc.setText("0");
         adHoc.setEditable(false);
@@ -64,6 +69,11 @@ public class StatisticView extends View {
         add(parkingPass);
 
     }
+
+    /**
+     * Updates the view
+     * @param model
+     */
 
     public void update(Model model) {
         ParkingModel parkingModel = (ParkingModel)model;
