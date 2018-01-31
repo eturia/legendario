@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.HashMap;
 
 public class StatisticView extends View {
-    private SimulatorController simulatorController;
+
 
     private JLabel freeSpotsLabel, totalCarsLabel, adHocLabel, parkingPassLabel, carQueueLabel;
     private JTextField freeSpots, totalCars, adHoc, parkingPass, carQueue;
@@ -83,9 +83,6 @@ public class StatisticView extends View {
         carQueue.setColumns(10);
         carQueue.setBackground(Color.WHITE);
         add(carQueue);
-
-
-
 
 
     }
