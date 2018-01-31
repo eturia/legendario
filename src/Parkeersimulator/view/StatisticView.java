@@ -63,17 +63,6 @@ public class StatisticView extends View {
         parkingPass.setBackground(Color.WHITE);
         add(parkingPass);
 
-        //Carqueue label
-        carQueueLabel = new JLabel("Auto's in queue");
-        add(carQueueLabel);
-
-        //Carqueue textfield
-        carQueue = new JTextField(3);
-        carQueue.setText("0");
-        carQueue.setEditable(false);
-        carQueue.setBackground(Color.WHITE);
-        add(carQueue);
-
     }
 
     public void update(Model model) {

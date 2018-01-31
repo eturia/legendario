@@ -31,29 +31,24 @@ public class ParkGarageView extends View {
 
 
         //test
-        JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new BorderLayout());
+
         GridBagConstraints c = new GridBagConstraints();
 
         // Bediening
         knop_start = new JButton("Start");
         knop_start.setName("knop_start");
         knop_start.addActionListener(controller);
+        add(knop_start, c);
 
         knop_stop = new JButton("Stop");
         knop_stop.setName("knop_stop");
         knop_stop.addActionListener(controller);
-
-        //Start knop
-        c.gridx = 1;
-        c.gridy = 0;
-        c.gridwidth=1;
-        c.gridheight=1;
-        add(knop_start, c);
-
-        //Stop knop
-        c.gridy++;
         add(knop_stop, c);
+
+        knop_reset = new JButton("Reset");
+        knop_reset.setName("knop_reset");
+        knop_reset.addActionListener(controller);
+        add(knop_reset,c);
 
     }
 
