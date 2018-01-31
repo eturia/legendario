@@ -7,19 +7,20 @@ import Parkeersimulator.model.ParkingModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+
 
 public class ParkGarageView extends View {
 
-        private SimulatorController simulatorController;
-
         private Dimension size;
-        private Image carParkImage;
+        private BufferedImage carParkImage;
 
         private JButton knop_start, knop_stop, knop_reset;
         private JLabel lengthLabel,timeTitle, timeLabel;
         private JTextField durationField;
 
-        static final Color FRAME_BG_COLOR = new Color(220, 220, 220);
+         private String[] legendaName;
+        private Color[] legendaColor;
 
         /**
          * Constructor for objects of class CarPark
@@ -27,6 +28,9 @@ public class ParkGarageView extends View {
     public ParkGarageView(Controller controller) {
         super(controller);
         size = new Dimension(0, 0);
+
+        legendaName = new String[]{"AdHoc","ParkingPass","Abonnee plekken","Leeg"};
+        legendaColor = new Color[]{AdHocCar.COLOR, ParkingPassCar.COLOR,Color.lightGray, Color.WHITE};
 
         //test
         JPanel inputPanel = new JPanel();
@@ -64,16 +68,6 @@ public class ParkGarageView extends View {
 
     }
 
-        public int getSimulationLength(JTextField durationField){
-        try{
-            return Integer.parseInt(durationField.getText());
-        }
-        catch(NumberFormatException e){
-            return 0;
-        }
-    }
-
-
     /**
      * Overridden. Tell the GUI manager how big we would like to be.
      */
@@ -85,7 +79,10 @@ public class ParkGarageView extends View {
      * Overriden. The car park view component needs to be redisplayed. Copy the
      * internal image to screen.
      */
+    @Override
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
         if (carParkImage == null) {
             return;
         }
@@ -104,12 +101,23 @@ public class ParkGarageView extends View {
      * Paint a place on this car park view in a given color.
      */
     private void drawPlace(Graphics graphics, Location location, Color color) {
+        int width = carParkImage.getWidth();
+        int height = carParkImage.getHeight();
+
         graphics.setColor(color);
         graphics.fillRect(
                 location.getFloor() * 260 + (1 + (int)Math.floor(location.getRow() * 0.5)) * 75 + (location.getRow() % 2) * 20,
                 60 + location.getPlace() * 10,
                 20 - 1,
-                10 - 1); // TODO use dynamic size or constants
+                10 - 1);
+
+        for(int i = 0; i < legendaName.length; i++) {
+            graphics.setColor(legendaColor[i]);
+            graphics.fillRect(width - (width/6), (height/20) + (i * (height/20)), (width/80), (height/40));
+            graphics.setColor(Color.BLACK);
+            graphics.setFont(new Font("Arial", Font.PLAIN, (width+height)/100));
+            graphics.drawString(legendaName[i], width - (width/8), (height/20) + (i * (height/20)) + ((height/160) + (graphics.getFont().getSize() / 2)));
+        }
     }
 
     public void update(Model model) {
@@ -118,7 +126,7 @@ public class ParkGarageView extends View {
         // Create a new car park image if the size has changed.
         if (!size.equals(getSize())) {
             size = getSize();
-            carParkImage = createImage(size.width, size.height);
+            carParkImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
         }
         Graphics graphics = carParkImage.getGraphics();
         int passCounter = 0;
