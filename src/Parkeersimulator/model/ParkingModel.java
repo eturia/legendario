@@ -9,6 +9,7 @@ import java.util.Random;
 public class ParkingModel extends Model implements Runnable{
 
     public final Garage garage;
+    private final Time time;
     private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
@@ -17,18 +18,12 @@ public class ParkingModel extends Model implements Runnable{
     private static final int AD_HOC = 1;
     private static final int PASS = 2;
 
-
     private int tickPause = 100;
 
-    private int day = 0;
-    private int hour = 0;
-    private int minute = 0;
-
-
-    int weekDayArrivals= 100; // average number of arriving cars per hour
-    int weekendArrivals = 200; // average number of arriving cars per hour
-    int weekDayPassArrivals= 50; // average number of arriving cars per hour
-    int weekendPassArrivals = 5; // average number of arriving cars per hour
+    int weekDayArrivals;
+    int weekendArrivals;
+    int weekDayPassArrivals;
+    int weekendPassArrivals;
 
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
@@ -46,10 +41,15 @@ public class ParkingModel extends Model implements Runnable{
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
         garage = new Garage(3,6,30);
+        time = new Time();
     }
 
     public Garage getGarage() {
         return garage;
+    }
+
+    public Time getTime() {
+        return time;
     }
 
     public void run() {
@@ -74,8 +74,33 @@ public class ParkingModel extends Model implements Runnable{
         }
     }
 
+    /**
+     * Generates the flow in time periods
+     */
+    protected void setArrivals() {
+        if (time.getHour() >= 22 && time.getHour() >= 5) {
+            weekDayArrivals = 10; // average number of arriving cars per hour
+            weekDayPassArrivals = 1; // average number of arriving cars per hour
+            weekendArrivals = 15; // average number of arriving cars per hour
+            weekendPassArrivals = 1; // average number of arriving cars per hour
+        } else if (time.getHour() < 7 ||
+                time.getHour() > 9 && time.getHour() < 12 ||
+                time.getHour() > 14 && time.getHour() < 17 ||
+                time.getHour() > 19 && time.getHour() < 22) {
+            weekDayArrivals = 25; // average number of arriving cars per hour
+            weekDayPassArrivals = 10; // average number of arriving cars per hour
+            weekendArrivals = 100; // average number of arriving cars per hour
+            weekendPassArrivals = 25; // average number of arriving cars per hour
+        } else {
+            weekDayArrivals = 100; // average number of arriving cars per hour
+            weekDayPassArrivals = 50; // average number of arriving cars per hour
+            weekendArrivals = 200; // average number of arriving cars per hour
+            weekendPassArrivals = 30; // average number of arriving cars per hour
+        }
+    }
+
     private void tick() {
-        advanceTime();
+        time.advanceTime();
         handleExit();
         updateViews();
         // Pause.
@@ -88,25 +113,9 @@ public class ParkingModel extends Model implements Runnable{
         garage.tick();
     }
 
-    private void advanceTime(){
-        // Advance the time by one minute.
-        minute++;
-        while (minute > 59) {
-            minute -= 60;
-            hour++;
-        }
-        while (hour > 23) {
-            hour -= 24;
-            day++;
-        }
-        while (day > 6) {
-            day -= 7;
-        }
-
-    }
-
     private void handleEntrance(){
         carsArriving();
+        setArrivals();
         carsEntering(entrancePassQueue);
         carsEntering(entranceCarQueue);
     }
@@ -182,7 +191,7 @@ public class ParkingModel extends Model implements Runnable{
         Random random = new Random();
 
         // Get the average number of cars that arrive per hour.
-        int averageNumberOfCarsPerHour = day < 5
+        int averageNumberOfCarsPerHour = time.getDay() < 5
                 ? weekDay
                 : weekend;
 

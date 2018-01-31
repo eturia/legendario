@@ -21,7 +21,6 @@ public class SimulatorController extends Controller<ParkingModel> {
             case "knop_stop":
                 model.setRunning(false);
                 return true;
-
         }
 
         return false;
