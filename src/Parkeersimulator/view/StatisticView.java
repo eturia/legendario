@@ -28,6 +28,7 @@ public class StatisticView extends View {
         freeSpotsLabel = new JLabel("Vrije plekken");
         add(freeSpotsLabel);
 
+
         // Free spots textfield
         freeSpots = new JTextField(3);
         freeSpots.setText("0");
@@ -46,6 +47,7 @@ public class StatisticView extends View {
         totalCars.setBackground(Color.WHITE);
         add(totalCars);
 
+
         //AdHoc label
         adHocLabel = new JLabel("AdHoc auto's");
         add(adHocLabel);
@@ -60,6 +62,7 @@ public class StatisticView extends View {
         //ParkingPass label
         parkingPassLabel = new JLabel("ParkingPass");
         add(parkingPassLabel);
+
 
         //ParkingPass textfield
         parkingPass = new JTextField(3);
@@ -77,6 +80,7 @@ public class StatisticView extends View {
 
     public void update(Model model) {
         ParkingModel parkingModel = (ParkingModel)model;
+
 
         freeSpots.setText("" + ((ParkingModel) model).getGarage().getNumberOfOpenSpots());
         totalCars.setText("" + ((ParkingModel) model).getGarage().getTotalCars());
