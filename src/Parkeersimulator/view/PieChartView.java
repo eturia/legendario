@@ -60,34 +60,62 @@ public class PieChartView extends View {
             size = getSize();
             pieChartImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
         }
-
-
-        // Local variables
-        int width = pieChartImage.getWidth();
-        int height = pieChartImage.getHeight();
-        int circleSize = (width + height) / 4;
-
         // Get the graphics from the image to draw on
         Graphics g = pieChartImage.getGraphics();
 
-        // Draw rect to refresh
-        g.setColor(getBackground());
-        g.fillRect(0, 0, width, height);
+        int count = 2;
+        int[] array = new int[3];
+        int oldDegrees=0;
+        String[] klasse = new String[3];
+        double percentage = 0;
 
-        int startPoint = 90;
-        for(int i = 0; i < cars.length; i++) {
-            float data = (float)((ParkingModel) model).getGarage().getPass().getCount() / (((ParkingModel) model).getGarage().getTotalNumberOfPlaces()/100f);
-            int rot = Math.round(data*3.6f);
 
-            // Draw arc
-            g.setColor(colors[i]);
-            g.fillArc((width/3)-(circleSize/2), (height/2)-(circleSize/2), circleSize, circleSize, startPoint, -rot);
-            startPoint -= rot;
+        Calculate pass = parkingModel.getGarage().getPass();
+        Calculate adhoc = parkingModel.getGarage().getAdhoc();
 
-            // Draw legenda item
-            g.fillRect(width - 160, height - (cars.length*20) + (i*20), 10, 10);
-            g.setColor(Color.BLACK);
-            g.drawString(legendaNames[i] + ": " + Math.round(data) + "%", width - 140, height - cars.length*20 + i*20 + (5 + (g.getFont().getSize() / 2)));
+        count = count + pass.getCount() + adhoc.getCount() + parkingModel.getGarage().getNumberOfOpenSpots();
+        array[0] = pass.getCount(); // number of actors
+        klasse[0] = pass.getName();
+        array[1] = adhoc.getCount(); // number of actors
+        klasse[1] = adhoc.getName();// names of the classes to set the colour later
+        array[2] = parkingModel.getGarage().getNumberOfOpenSpots();
+        klasse[2] = "open";
+
+        // loop through the array and do action
+        for(int i=0;i<array.length;i++)
+        {
+            double x = array[i];
+            percentage = (x / count * 100);
+
+
+
+            //als percentage / 2 een restwaarde heeft, percentage +1, zodat de PieView goed uitlijnd
+            if((percentage % 2) != 0 && (percentage % 2) <= 0.5)
+            {
+                percentage +=1;
+            }
+
+            double graden = (percentage*3.65);
+            // set the colour corresponding to the class name
+            if(klasse[i].equals("pass"))
+            {
+                g.setColor(Color.BLUE);
+            }
+            if(klasse[i].equals("adhoc"))
+            {
+                g.setColor(Color.RED);
+            }
+            if(klasse[i].equals("open"))
+            {
+                g.setColor(Color.GREEN);
+            }
+
+            // if the degrees is lower than 1, then make it 1 or else it won't show
+            if(graden < 1 && graden > 0) graden=1;
+            g.fillArc(10,10,200,200,oldDegrees,(int)graden);
+            oldDegrees += graden; // keep track of the current position
+
+
         }
 
         // Repaint
