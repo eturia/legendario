@@ -55,6 +55,12 @@ public class Garage {
 
     public int getPassSpots() {return passSpots; }
 
+    public Car[][][] getAllCars() { return cars; }
+
+    public int getTotalCars(){
+        return getPass().getCount() + getAdhoc().getCount();
+    }
+
     public Car getCarAt(Location location) {
         if (!locationIsValid(location)) {
             return null;
