@@ -16,18 +16,8 @@ public class PieChartView extends View {
     private Dimension size;
     private BufferedImage pieChartImage;
 
-
-    private String[] cars;
-    private Color[] colors;
-    private String[] legendaNames;
-
     public PieChartView() {
         size = new Dimension(0, 0);
-
-
-        cars = new String[]{"AdHoc","ParkingPass","Abonnee plekken","Leeg"};
-        colors = new Color[] {AdHocCar.COLOR, ParkingPassCar.COLOR,Color.lightGray, Color.WHITE};
-        legendaNames = new String[] {"AdHoc","ParkingPass","Abonnee plekken","Leeg"};
     }
 
     /**
@@ -74,22 +64,19 @@ public class PieChartView extends View {
         Calculate adhoc = parkingModel.getGarage().getAdhoc();
 
         count = count + pass.getCount() + adhoc.getCount() + parkingModel.getGarage().getNumberOfOpenSpots();
-        array[0] = pass.getCount(); // number of actors
+        array[0] = pass.getCount();
         klasse[0] = pass.getName();
-        array[1] = adhoc.getCount(); // number of actors
-        klasse[1] = adhoc.getName();// names of the classes to set the colour later
+        array[1] = adhoc.getCount();
+        klasse[1] = adhoc.getName();
         array[2] = parkingModel.getGarage().getNumberOfOpenSpots();
         klasse[2] = "open";
 
-        // loop through the array and do action
         for(int i=0;i<array.length;i++)
         {
             double x = array[i];
             percentage = (x / count * 100);
 
-
-
-            //als percentage / 2 een restwaarde heeft, percentage +1, zodat de PieView goed uitlijnd
+            //Voor uitlijning bij restwaarde
             if((percentage % 2) != 0 && (percentage % 2) <= 0.5)
             {
                 percentage +=1;
@@ -109,16 +96,12 @@ public class PieChartView extends View {
             {
                 g.setColor(Color.GREEN);
             }
-
-            // if the degrees is lower than 1, then make it 1 or else it won't show
+            // Als een graden onder de nul komt maak er 1 van zo niet, toon niet
             if(graden < 1 && graden > 0) graden=1;
             g.fillArc(10,10,200,200,oldDegrees,(int)graden);
-            oldDegrees += graden; // keep track of the current position
-
-
+            oldDegrees += graden; // huidige positie meten
         }
 
-        // Repaint
         repaint();
     }
 
