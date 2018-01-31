@@ -4,6 +4,7 @@ import Parkeersimulator.view.ParkGarageView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Random;
 
 public class ParkingModel extends Model implements Runnable{
@@ -228,7 +229,6 @@ public class ParkingModel extends Model implements Runnable{
     {
         running = flag;
     }
-
 
 
 }

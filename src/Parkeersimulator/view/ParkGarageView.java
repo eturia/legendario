@@ -1,21 +1,23 @@
 package Parkeersimulator.view;
 
 import Parkeersimulator.controller.Controller;
+import Parkeersimulator.controller.SimulatorController;
 import Parkeersimulator.model.*;
+import Parkeersimulator.model.ParkingModel;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 
 public class ParkGarageView extends View {
 
-        private Dimension size;
+    private Dimension size;
     private BufferedImage carParkImage;
 
-        private JButton knop_start, knop_stop, knop_reset;
-        static final Color FRAME_BG_COLOR = new Color(221, 221, 221);
+    private JButton knop_start, knop_stop, knop_reset;
+    private JLabel lengthLabel,timeTitle, timeLabel;
+    private JTextField durationField;
 
     private String[] legendaName;
     private Color[] legendaColor;
@@ -27,13 +29,10 @@ public class ParkGarageView extends View {
         super(controller);
         size = new Dimension(0, 0);
 
-        legendaName = new String[]{"AdHoc","ParkingPass","Abonnee plekken","Leeg Plekken"};
-        legendaColor = new Color[]{Color.red, Color.blue,Color.lightGray, Color.WHITE};
 
         //test
         JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridBagLayout());
-        inputPanel.setBackground(FRAME_BG_COLOR);
+        inputPanel.setLayout(new BorderLayout());
         GridBagConstraints c = new GridBagConstraints();
 
         // Bediening
@@ -55,23 +54,24 @@ public class ParkGarageView extends View {
         //Stop knop
         c.gridy++;
         add(knop_stop, c);
+
     }
-
-
-
 
     /**
      * Overridden. Tell the GUI manager how big we would like to be.
      */
     public Dimension getPreferredSize() {
-        return new Dimension(800, 500);
+        return  new Dimension(800, 500);
     }
 
     /**
      * Overriden. The car park view component needs to be redisplayed. Copy the
      * internal image to screen.
      */
+    @Override
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
         if (carParkImage == null) {
             return;
         }
@@ -100,16 +100,12 @@ public class ParkGarageView extends View {
                 20 - 1,
                 10 - 1);
 
-        for(int i = 0; i < legendaName.length; i++) {
-            graphics.setColor(legendaColor[i]);
-            graphics.fillRect(width - (width/6), (height/20) + (i * (height/20)), (width/80), (height/40));
-            graphics.setColor(Color.BLACK);
-            graphics.setFont(new Font("Arial", Font.PLAIN, (width+height)/100));
-            graphics.drawString(legendaName[i], width - (width/8), (height/20) + (i * (height/20)) + ((height/160) + (graphics.getFont().getSize() / 2)));
+
         }
-    }
+
 
     public void update(Model model) {
+
         ParkingModel parkingModel = (ParkingModel)model;
         // Create a new car park image if the size has changed.
         if (!size.equals(getSize())) {
@@ -136,5 +132,6 @@ public class ParkGarageView extends View {
         }
         repaint();
     }
+
 
 }

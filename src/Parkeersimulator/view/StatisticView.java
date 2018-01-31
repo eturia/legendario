@@ -1,8 +1,10 @@
 package Parkeersimulator.view;
 
-import Parkeersimulator.model.*;
+import Parkeersimulator.model.Model;
+import Parkeersimulator.model.ParkingModel;
 
 import javax.swing.*;
+
 import java.awt.*;
 
 
@@ -13,16 +15,16 @@ public class StatisticView extends View {
 
 
     public StatisticView (){
-        setLayout(new GridLayout(0, 2, 0, 0));
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new BorderLayout());
 
-        JPanel statisticPanel = new JPanel();
 
         // Vrije plekken label
         freeSpotsLabel = new JLabel("Vrije plekken");
         add(freeSpotsLabel);
 
         // Vrije plekken text field
-        freeSpots = new JTextField();
+        freeSpots = new JTextField(3);
         freeSpots.setText("0");
         freeSpots.setEditable(false);
         freeSpots.setBackground(Color.WHITE);
@@ -33,7 +35,7 @@ public class StatisticView extends View {
         add(totalCarsLabel);
 
         //Totaal textfield
-        totalCars = new JTextField();
+        totalCars = new JTextField(3);
         totalCars.setText("0");
         totalCars.setEditable(false);
         totalCars.setBackground(Color.WHITE);
@@ -44,7 +46,7 @@ public class StatisticView extends View {
         add(adHocLabel);
 
         //Adhoc textfield
-        adHoc = new JTextField();
+        adHoc = new JTextField(3);
         adHoc.setText("0");
         adHoc.setEditable(false);
         adHoc.setBackground(Color.WHITE);
@@ -55,7 +57,7 @@ public class StatisticView extends View {
         add(parkingPassLabel);
 
         //ParkingPass textfield
-        parkingPass = new JTextField();
+        parkingPass = new JTextField(3);
         parkingPass.setText("0");
         parkingPass.setEditable(false);
         parkingPass.setBackground(Color.WHITE);
@@ -66,20 +68,23 @@ public class StatisticView extends View {
         add(carQueueLabel);
 
         //Carqueue textfield
-        carQueue = new JTextField();
+        carQueue = new JTextField(3);
         carQueue.setText("0");
         carQueue.setEditable(false);
         carQueue.setBackground(Color.WHITE);
         add(carQueue);
+
     }
 
     public void update(Model model) {
         ParkingModel parkingModel = (ParkingModel)model;
 
-        freeSpots.setText("" + parkingModel.getGarage().getNumberOfOpenSpots());
-        totalCars.setText("" + parkingModel.getGarage().getTotalCars());
-        adHoc.setText("" + parkingModel.getGarage().getAdhoc().getCount());
-        parkingPass.setText("" + parkingModel.getGarage().getPass().getCount());
+        freeSpots.setText("" + ((ParkingModel) model).getGarage().getNumberOfOpenSpots());
+        totalCars.setText("" + ((ParkingModel) model).getGarage().getTotalCars());
+        adHoc.setText("" + ((ParkingModel) model).getGarage().getAdhoc().getCount());
+        parkingPass.setText("" + ((ParkingModel) model).getGarage().getPass().getCount());
 
     }
+
+
 }

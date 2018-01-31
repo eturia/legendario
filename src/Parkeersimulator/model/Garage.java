@@ -53,15 +53,10 @@ public class Garage {
         return passHolder;
     }
 
-    public Car[][][] getAllCars()
+    public int getTotalNumberOfPlaces()
     {
-        return cars;
+        return getNumberOfPlaces() * getNumberOfRows() * getNumberOfFloors();
     }
-
-    public int getTotalCars(){
-        return getPass().getCount() + getAdhoc().getCount();
-    }
-
 
     public int getPassSpots() {return passSpots; }
 
