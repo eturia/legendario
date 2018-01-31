@@ -19,7 +19,7 @@ public class ParkGarageView extends View {
         private JLabel lengthLabel,timeTitle, timeLabel;
         private JTextField durationField;
 
-         private String[] legendaName;
+        private String[] legendaName;
         private Color[] legendaColor;
 
         /**
