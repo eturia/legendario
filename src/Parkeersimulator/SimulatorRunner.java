@@ -6,6 +6,7 @@ import Parkeersimulator.controller.Controller;
 import Parkeersimulator.model.ParkingModel;
 import Parkeersimulator.view.ParkGarageView;
 import Parkeersimulator.view.StatisticView;
+import Parkeersimulator.view.TimeView;
 import Parkeersimulator.view.View;
 
 import javax.swing.*;
@@ -15,25 +16,25 @@ public class SimulatorRunner extends JFrame {
 
     public SimulatorRunner(){
         setTitle("Parkeergarage El Legendarios");
-
-        JPanel root=new JPanel();
-        root.setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
 
         ParkingModel model=new ParkingModel();
         Controller controller= new SimulatorController(model);
         View view=new ParkGarageView(controller);
-        View view2=new StatisticView();
+        View view2=new TimeView();
+        View view3=new StatisticView();
 
+        getContentPane().add(view, BorderLayout.CENTER);
+        getContentPane().add(view2, BorderLayout.NORTH);
+        getContentPane().add(view3, BorderLayout.EAST);
 
-        root.add(view);
-        root.add(view2);
-        add(root);
-        pack();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        pack();
         setVisible(true);
 
         model.registerView(view);
         model.registerView(view2);
+        model.registerView(view3);
         model.updateViews();
 
     }

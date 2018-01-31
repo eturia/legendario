@@ -1,11 +1,10 @@
 package Parkeersimulator.view;
 
 import Parkeersimulator.controller.Controller;
-import Parkeersimulator.controller.SimulatorController;
 import Parkeersimulator.model.*;
-import Parkeersimulator.model.ParkingModel;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -13,28 +12,28 @@ import java.awt.image.BufferedImage;
 public class ParkGarageView extends View {
 
         private Dimension size;
-        private BufferedImage carParkImage;
+    private BufferedImage carParkImage;
 
         private JButton knop_start, knop_stop, knop_reset;
-        private JLabel lengthLabel,timeTitle, timeLabel;
-        private JTextField durationField;
+        static final Color FRAME_BG_COLOR = new Color(221, 221, 221);
 
-        private String[] legendaName;
-        private Color[] legendaColor;
+    private String[] legendaName;
+    private Color[] legendaColor;
 
-        /**
-         * Constructor for objects of class CarPark
-         */
+    /**
+     * Constructor for objects of class CarPark
+     */
     public ParkGarageView(Controller controller) {
         super(controller);
         size = new Dimension(0, 0);
 
-        legendaName = new String[]{"AdHoc","ParkingPass","Abonnee plekken","Leeg"};
-        legendaColor = new Color[]{AdHocCar.COLOR, ParkingPassCar.COLOR,Color.lightGray, Color.WHITE};
+        legendaName = new String[]{"AdHoc","ParkingPass","Abonnee plekken","Leeg Plekken"};
+        legendaColor = new Color[]{Color.red, Color.blue,Color.lightGray, Color.WHITE};
 
         //test
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridBagLayout());
+        inputPanel.setBackground(FRAME_BG_COLOR);
         GridBagConstraints c = new GridBagConstraints();
 
         // Bediening
@@ -56,33 +55,23 @@ public class ParkGarageView extends View {
         //Stop knop
         c.gridy++;
         add(knop_stop, c);
-
-        //Lengte Label
-        lengthLabel = new JLabel("Aantal minuten");
-        add(lengthLabel,c);
-
-        //Lengte Veld
-        durationField = new JTextField(3);
-        durationField.setName("durationField");
-        add(durationField, c);
-
     }
+
+
+
 
     /**
      * Overridden. Tell the GUI manager how big we would like to be.
      */
     public Dimension getPreferredSize() {
-        return  new Dimension(800, 500);
+        return new Dimension(800, 500);
     }
 
     /**
      * Overriden. The car park view component needs to be redisplayed. Copy the
      * internal image to screen.
      */
-    @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
         if (carParkImage == null) {
             return;
         }
@@ -121,7 +110,6 @@ public class ParkGarageView extends View {
     }
 
     public void update(Model model) {
-
         ParkingModel parkingModel = (ParkingModel)model;
         // Create a new car park image if the size has changed.
         if (!size.equals(getSize())) {
@@ -148,6 +136,5 @@ public class ParkGarageView extends View {
         }
         repaint();
     }
-
 
 }

@@ -1,17 +1,12 @@
 package Parkeersimulator.view;
-import Parkeersimulator.controller.Controller;
-import Parkeersimulator.controller.SimulatorController;
-import Parkeersimulator.model.CarQueue;
-import Parkeersimulator.model.Model;
-import Parkeersimulator.model.ParkingModel;
+
+import Parkeersimulator.model.*;
 
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
 import java.awt.*;
-import java.util.HashMap;
+
 
 public class StatisticView extends View {
-
 
     private JLabel freeSpotsLabel, totalCarsLabel, adHocLabel, parkingPassLabel, carQueueLabel;
     private JTextField freeSpots, totalCars, adHoc, parkingPass, carQueue;
@@ -21,8 +16,6 @@ public class StatisticView extends View {
         setLayout(new GridLayout(0, 2, 0, 0));
 
         JPanel statisticPanel = new JPanel();
-        add(statisticPanel);
-        statisticPanel.setLayout(new BorderLayout(0, 0));
 
         // Vrije plekken label
         freeSpotsLabel = new JLabel("Vrije plekken");
@@ -32,7 +25,6 @@ public class StatisticView extends View {
         freeSpots = new JTextField();
         freeSpots.setText("0");
         freeSpots.setEditable(false);
-        freeSpots.setColumns(10);
         freeSpots.setBackground(Color.WHITE);
         add(freeSpots);
 
@@ -44,7 +36,6 @@ public class StatisticView extends View {
         totalCars = new JTextField();
         totalCars.setText("0");
         totalCars.setEditable(false);
-        totalCars.setColumns(10);
         totalCars.setBackground(Color.WHITE);
         add(totalCars);
 
@@ -56,7 +47,6 @@ public class StatisticView extends View {
         adHoc = new JTextField();
         adHoc.setText("0");
         adHoc.setEditable(false);
-        adHoc.setColumns(10);
         adHoc.setBackground(Color.WHITE);
         add(adHoc);
 
@@ -68,7 +58,6 @@ public class StatisticView extends View {
         parkingPass = new JTextField();
         parkingPass.setText("0");
         parkingPass.setEditable(false);
-        parkingPass.setColumns(10);
         parkingPass.setBackground(Color.WHITE);
         add(parkingPass);
 
@@ -80,22 +69,17 @@ public class StatisticView extends View {
         carQueue = new JTextField();
         carQueue.setText("0");
         carQueue.setEditable(false);
-        carQueue.setColumns(10);
         carQueue.setBackground(Color.WHITE);
         add(carQueue);
-
-
     }
 
     public void update(Model model) {
         ParkingModel parkingModel = (ParkingModel)model;
 
-        freeSpots.setText("" + ((ParkingModel) model).getGarage().getNumberOfOpenSpots());
-        totalCars.setText("" + ((ParkingModel) model).getGarage().getTotalCars());
-        adHoc.setText("" + ((ParkingModel) model).getGarage().getAdhoc().getCount());
-        parkingPass.setText("" + ((ParkingModel) model).getGarage().getPass().getCount());
+        freeSpots.setText("" + parkingModel.getGarage().getNumberOfOpenSpots());
+        totalCars.setText("" + parkingModel.getGarage().getTotalCars());
+        adHoc.setText("" + parkingModel.getGarage().getAdhoc().getCount());
+        parkingPass.setText("" + parkingModel.getGarage().getPass().getCount());
 
     }
-
-
 }
