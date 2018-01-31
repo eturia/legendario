@@ -1,24 +1,25 @@
 package Parkeersimulator.view;
 
 import Parkeersimulator.controller.Controller;
+import Parkeersimulator.controller.SimulatorController;
 import Parkeersimulator.model.*;
+import Parkeersimulator.model.ParkingModel;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * This is the main view. It draws the car park and updates it
+ */
 
 public class ParkGarageView extends View {
 
-        private Dimension size;
+    private Dimension size;
     private BufferedImage carParkImage;
 
-        private JButton knop_start, knop_stop, knop_reset;
-        static final Color FRAME_BG_COLOR = new Color(221, 221, 221);
+    private JButton knop_start, knop_stop, knop_reset;
 
-    private String[] legendaName;
-    private Color[] legendaColor;
 
     /**
      * Constructor for objects of class CarPark
@@ -27,51 +28,44 @@ public class ParkGarageView extends View {
         super(controller);
         size = new Dimension(0, 0);
 
-        legendaName = new String[]{"AdHoc","ParkingPass","Abonnee plekken","Leeg Plekken"};
-        legendaColor = new Color[]{Color.red, Color.blue,Color.lightGray, Color.WHITE};
 
         //test
-        JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridBagLayout());
-        inputPanel.setBackground(FRAME_BG_COLOR);
+
         GridBagConstraints c = new GridBagConstraints();
 
         // Bediening
         knop_start = new JButton("Start");
         knop_start.setName("knop_start");
         knop_start.addActionListener(controller);
+        add(knop_start, c);
 
         knop_stop = new JButton("Stop");
         knop_stop.setName("knop_stop");
         knop_stop.addActionListener(controller);
-
-        //Start knop
-        c.gridx = 1;
-        c.gridy = 0;
-        c.gridwidth=1;
-        c.gridheight=1;
-        add(knop_start, c);
-
-        //Stop knop
-        c.gridy++;
         add(knop_stop, c);
+
+        knop_reset = new JButton("Reset");
+        knop_reset.setName("knop_reset");
+        knop_reset.addActionListener(controller);
+        add(knop_reset,c);
+
     }
-
-
-
 
     /**
      * Overridden. Tell the GUI manager how big we would like to be.
      */
     public Dimension getPreferredSize() {
-        return new Dimension(800, 500);
+        return  new Dimension(800, 500);
     }
 
     /**
      * Overriden. The car park view component needs to be redisplayed. Copy the
      * internal image to screen.
      */
+    @Override
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
         if (carParkImage == null) {
             return;
         }
@@ -100,16 +94,16 @@ public class ParkGarageView extends View {
                 20 - 1,
                 10 - 1);
 
-        for(int i = 0; i < legendaName.length; i++) {
-            graphics.setColor(legendaColor[i]);
-            graphics.fillRect(width - (width/6), (height/20) + (i * (height/20)), (width/80), (height/40));
-            graphics.setColor(Color.BLACK);
-            graphics.setFont(new Font("Arial", Font.PLAIN, (width+height)/100));
-            graphics.drawString(legendaName[i], width - (width/8), (height/20) + (i * (height/20)) + ((height/160) + (graphics.getFont().getSize() / 2)));
+
         }
-    }
+
+    /**
+     * Updates the view
+     * @param model
+     */
 
     public void update(Model model) {
+
         ParkingModel parkingModel = (ParkingModel)model;
         // Create a new car park image if the size has changed.
         if (!size.equals(getSize())) {
@@ -136,5 +130,6 @@ public class ParkGarageView extends View {
         }
         repaint();
     }
+
 
 }

@@ -1,5 +1,6 @@
 package Parkeersimulator.model;
 
+
 public class Garage {
 
     private int numberOfFloors;
@@ -51,6 +52,20 @@ public class Garage {
 
     protected int getPassHolder(){
         return passHolder;
+    }
+
+    public int getTotalNumberOfPlaces()
+    {
+        return getNumberOfPlaces() * getNumberOfRows() * getNumberOfFloors();
+    }
+
+    public void resetStats(){
+        cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+        adhoc = new Calculate("adhoc");
+        pass = new Calculate("pass");
+        passHolder = 0;
+
+
     }
 
     public int getPassSpots() {return passSpots; }
@@ -182,5 +197,7 @@ public class Garage {
         return null;
     }
 
-}
 
+
+
+}

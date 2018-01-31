@@ -1,15 +1,12 @@
 package Parkeersimulator.model;
 
-import Parkeersimulator.view.ParkGarageView;
-
-import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
 public class ParkingModel extends Model implements Runnable{
 
-    public final Garage garage;
-    private final Time time;
+    public Garage garage;
+    private Time time;
     private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
@@ -19,6 +16,7 @@ public class ParkingModel extends Model implements Runnable{
     private static final int PASS = 2;
 
     private int tickPause = 100;
+    private int currentTick = 1;
 
     int weekDayArrivals;
     int weekendArrivals;
@@ -29,7 +27,7 @@ public class ParkingModel extends Model implements Runnable{
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
-    //Multithreading info
+    //Multithreading
     private Thread thread;
     private String threadName = "model";
     private boolean running = true;
@@ -48,8 +46,26 @@ public class ParkingModel extends Model implements Runnable{
         return garage;
     }
 
+    public int getCurrentTick()
+    {
+        return currentTick;
+    }
+
     public Time getTime() {
         return time;
+    }
+
+    public void reset(){
+        entranceCarQueue = new CarQueue();
+        entrancePassQueue = new CarQueue();
+        paymentCarQueue = new CarQueue();
+        exitCarQueue = new CarQueue();
+        garage = new Garage(3,6,30);
+        time = new Time();
+
+        currentTick = 1;
+
+        getGarage().resetStats();
     }
 
     public void run() {
@@ -58,19 +74,20 @@ public class ParkingModel extends Model implements Runnable{
         while (i < 10000 && running) {
             tick();
             i++;
+            currentTick++;
         }
     }
 
     public void start () {
         if (thread == null) {
-            thread = new Thread (this, threadName);
-            running = true;
-            thread.start ();
+            thread = new Thread (this, threadName);        //Creates a new thread
+            running = true;                                       //Sets running to true
+            thread.start ();                                      //Start the thread
         }
         else
         {
-            thread = null;	// Delete the thread.
-            start();	// Remake a new thread and start the simulation.
+            thread = null;	                                      // Delete the thread.
+            start();	                                          // Remake a new thread and start the simulation.
         }
     }
 
@@ -228,7 +245,6 @@ public class ParkingModel extends Model implements Runnable{
     {
         running = flag;
     }
-
 
 
 }

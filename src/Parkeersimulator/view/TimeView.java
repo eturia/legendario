@@ -5,6 +5,10 @@ import Parkeersimulator.model.*;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Shows the current time on the car park
+ */
+
 public class TimeView extends View {
 
     private JLabel month,week,day,time;
@@ -22,6 +26,11 @@ public class TimeView extends View {
         add(day);
         add(time);
     }
+
+    /**
+     * Updates the view
+     * @param model
+     */
 
     public void update(Model model) {
         ParkingModel parkingModel = (ParkingModel)model;
