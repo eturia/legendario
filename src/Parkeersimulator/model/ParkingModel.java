@@ -1,16 +1,12 @@
 package Parkeersimulator.model;
 
-import Parkeersimulator.view.ParkGarageView;
-
-import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 import java.util.Random;
 
 public class ParkingModel extends Model implements Runnable{
 
-    public final Garage garage;
-    private final Time time;
+    public Garage garage;
+    private Time time;
     private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
@@ -20,6 +16,7 @@ public class ParkingModel extends Model implements Runnable{
     private static final int PASS = 2;
 
     private int tickPause = 100;
+    private int currentTick = 1;
 
     int weekDayArrivals;
     int weekendArrivals;
@@ -49,8 +46,26 @@ public class ParkingModel extends Model implements Runnable{
         return garage;
     }
 
+    public int getCurrentTick()
+    {
+        return currentTick;
+    }
+
     public Time getTime() {
         return time;
+    }
+
+    public void reset(){
+        entranceCarQueue = new CarQueue();
+        entrancePassQueue = new CarQueue();
+        paymentCarQueue = new CarQueue();
+        exitCarQueue = new CarQueue();
+        garage = new Garage(3,6,30);
+        time = new Time();
+
+        currentTick = 1;
+
+        getGarage().resetStats();
     }
 
     public void run() {
@@ -59,6 +74,7 @@ public class ParkingModel extends Model implements Runnable{
         while (i < 10000 && running) {
             tick();
             i++;
+            currentTick++;
         }
     }
 

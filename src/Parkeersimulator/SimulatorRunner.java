@@ -9,6 +9,10 @@ import Parkeersimulator.view.*;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Main class in the application
+ */
+
 public class SimulatorRunner extends JFrame {
 
     public SimulatorRunner(){
